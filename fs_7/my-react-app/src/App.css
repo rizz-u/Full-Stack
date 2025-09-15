@@ -1,0 +1,47 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #fff; /* Changed to white */
+  border-radius: 12px;
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #222; /* Dark text for white background */
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  width: 220px;
+  padding: 1.5em;
+  border-radius: 10px;
+  background: #f9f9f9; /* Light gray card background */
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  color: #222; /* Dark text */
+}
+
+.card:hover {
+  transform: scale(1.03);
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1); /* Softer dark shadow */
+}
+
+.read-the-docs {
+  color: #555; /* Neutral gray for readability */
+  font-style: italic;
+}
