@@ -1,0 +1,58 @@
+/* frontend/src/styles/ProductList.css */
+.pl-wrap {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 16px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.pl-wrap h2 {
+  margin-bottom: 20px;
+  background: #222;
+  color: #fff;
+  padding: 10px 0;
+  border-radius: 6px;
+}
+
+.pl-grid {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pl-card {
+  background: #222;
+  color: #eee;
+  border-radius: 8px;
+  padding: 20px;
+  width: 260px;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.06) inset;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.pl-card h3 {
+  margin-top: 0;
+}
+
+.pl-price {
+  margin: 12px 0;
+}
+
+.pl-desc {
+  font-size: 0.9rem;
+  height: 40px;
+  overflow: hidden;
+}
+
+.pl-btn {
+  margin-top: 12px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #0a84ff;
+  color: white;
+  font-weight: bold;
+}
