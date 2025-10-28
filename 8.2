@@ -1,0 +1,72 @@
+LoginForm.js :
+import React, { useState } from 'react';
+
+const LoginForm = () => {
+  // Step 2a: Create state for username and password
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  // Step 2b: Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent page reload
+
+    // Step 2c: Basic validation
+    if (!username || !password) {
+      setError('Please enter both username and password.');
+      return;
+    }
+
+    // Step 2d: Clear error and log the values
+    setError('');
+    console.log('Username:', username);
+    console.log('Password:', password);
+
+    // Optionally, clear form after submit
+    setUsername('');
+    setPassword('');
+  };
+
+  return (
+    <div style={{ maxWidth: '300px', margin: '50px auto' }}>
+      <h2>Login Form</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter username"
+          />
+        </div>
+        <div style={{ marginTop: '10px' }}>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter password"
+          />
+        </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type="submit" style={{ marginTop: '10px' }}>Login</button>
+      </form>
+    </div>
+  );
+};
+
+export default LoginForm;
+App.js :
+import React from 'react';
+import LoginForm from './LoginForm';
+
+function App() {
+  return (
+    <div className="App">
+      <LoginForm />
+    </div>
+  );
+}
+
+export default App;
