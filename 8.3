@@ -1,0 +1,85 @@
+server.js :
+const express = require('express');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+
+const app = express();
+const PORT = 3000;
+
+app.use(bodyParser.json());
+
+// Secret key for JWT
+const SECRET_KEY = 'mySecretKey';
+
+// ----------------- SAMPLE USERS -----------------
+// Hardcoded users for demonstration
+const users = [
+  { id: 1, username: 'admin1', password: 'adminpass', role: 'admin' },
+  { id: 2, username: 'moderator1', password: 'modpass', role: 'moderator' },
+  { id: 3, username: 'user1', password: 'userpass', role: 'user' }
+];
+
+// ----------------- LOGIN ROUTE -----------------
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  const user = users.find(u => u.username === username && u.password === password);
+  if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+
+  // Create JWT token with role
+  const token = jwt.sign(
+    { id: user.id, username: user.username, role: user.role },
+    SECRET_KEY,
+    { expiresIn: '1h' }
+  );
+
+  res.json({ message: 'Login successful', token });
+});
+
+// ----------------- JWT VERIFICATION MIDDLEWARE -----------------
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) return res.status(401).json({ message: 'Authorization header missing' });
+
+  const token = authHeader.split(' ')[1]; // Bearer token
+  if (!token) return res.status(401).json({ message: 'Token missing' });
+
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    if (err) return res.status(403).json({ message: 'Invalid or expired token' });
+    req.user = decoded; // store decoded info
+    next();
+  });
+};
+
+// ----------------- ROLE-BASED ACCESS MIDDLEWARE -----------------
+const permit = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user) return res.status(401).json({ message: 'User not authenticated' });
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Access denied: insufficient role' });
+    }
+    next();
+  };
+};
+
+// ----------------- PROTECTED ROUTES -----------------
+
+// Admin-only route
+app.get('/admin-dashboard', verifyToken, permit('admin'), (req, res) => {
+  res.json({ message: `Welcome ${req.user.username} to the Admin Dashboard!` });
+});
+
+// Moderator-only route
+app.get('/moderator-panel', verifyToken, permit('moderator'), (req, res) => {
+  res.json({ message: `Welcome ${req.user.username} to the Moderator Panel!` });
+});
+
+// General user route (accessible by all roles)
+app.get('/profile', verifyToken, permit('admin', 'moderator', 'user'), (req, res) => {
+  res.json({ message: `Welcome ${req.user.username} to your profile! Role: ${req.user.role}` });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
